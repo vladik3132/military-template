@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ua.edu.viti.military.dto.request.VehicleCreateRequest;
@@ -34,6 +35,7 @@ public class VehicleController {
     private final VehicleService vehicleService;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
     @Operation(
             summary = "Створити новий транспорт",
             description = """
@@ -77,6 +79,7 @@ public class VehicleController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR', 'VIEWER')")
     @GetMapping("/{id}")
     @Operation(
             summary = "Отримати транспорт за ID",
@@ -101,6 +104,7 @@ public class VehicleController {
         return ResponseEntity.ok(vehicle);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR', 'VIEWER')")
     @GetMapping
     @Operation(
             summary = "Отримати список всього транспорту",
@@ -126,6 +130,7 @@ public class VehicleController {
         return ResponseEntity.ok(vehicles);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
     @PutMapping("/{id}")
     @Operation(
             summary = "Оновити інформацію про транспорт",
@@ -159,6 +164,7 @@ public class VehicleController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(
             summary = "Видалити транспорт",
             description = "Видаляє запис про транспорт з системи"
@@ -182,6 +188,7 @@ public class VehicleController {
     }
 
     @GetMapping("/requiring-maintenance")
+    @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR', 'VIEWER')")
     @Operation(
             summary = "Транспорт що потребує технічного обслуговування",
             description = "Повертає список транспорту який перевищив інтервал ТО (пробіг >= ліміт)"

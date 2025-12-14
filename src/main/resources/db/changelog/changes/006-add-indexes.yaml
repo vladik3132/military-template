@@ -1,0 +1,80 @@
+databaseChangeLog:
+  - changeSet:
+      id: 006-add-indexes
+      author: student
+      description: Add indexes for performance optimization
+      changes:
+        - createIndex:
+            indexName: idx_vehicles_status
+            tableName: vehicles
+            columns:
+              - column:
+                  name: status
+        - createIndex:
+            indexName: idx_vehicles_category
+            tableName: vehicles
+            columns:
+              - column:
+                  name: category_id
+        - createIndex:
+            indexName: idx_vehicles_registration
+            tableName: vehicles
+            columns:
+              - column:
+                  name: registration_number
+        - createIndex:
+            indexName: idx_drivers_status
+            tableName: drivers
+            columns:
+              - column:
+                  name: assignment_status
+        - createIndex:
+            indexName: idx_drivers_license
+            tableName: drivers
+            columns:
+              - column:
+                  name: license_number
+        - createIndex:
+            indexName: idx_movements_vehicle
+            tableName: movement_logs
+            columns:
+              - column:
+                  name: vehicle_id
+        - createIndex:
+            indexName: idx_movements_type
+            tableName: movement_logs
+            columns:
+              - column:
+                  name: movement_type
+        - createIndex:
+            indexName: idx_movements_date
+            tableName: movement_logs
+            columns:
+              - column:
+                  name: performed_at
+                  descending: true
+      rollback:
+        - dropIndex:
+            indexName: idx_vehicles_status
+            tableName: vehicles
+        - dropIndex:
+            indexName: idx_vehicles_category
+            tableName: vehicles
+        - dropIndex:
+            indexName: idx_vehicles_registration
+            tableName: vehicles
+        - dropIndex:
+            indexName: idx_drivers_status
+            tableName: drivers
+        - dropIndex:
+            indexName: idx_drivers_license
+            tableName: drivers
+        - dropIndex:
+            indexName: idx_movements_vehicle
+            tableName: movement_logs
+        - dropIndex:
+            indexName: idx_movements_type
+            tableName: movement_logs
+        - dropIndex:
+            indexName: idx_movements_date
+            tableName: movement_logs

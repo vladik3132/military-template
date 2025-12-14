@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ua.edu.viti.military.dto.request.VehicleCategoryCreateRequest;
@@ -31,6 +32,7 @@ public class VehicleCategoryController {
     private final VehicleCategoryService vehicleCategoryService;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
     @Operation(
             summary = "Створити нову категорію транспорту",
             description = """
@@ -64,6 +66,7 @@ public class VehicleCategoryController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR', 'VIEWER')")
     @GetMapping("/{id}")
     @Operation(
             summary = "Отримати категорію за ID",
@@ -89,6 +92,7 @@ public class VehicleCategoryController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
     @Operation(
             summary = "Оновити категорію транспорту",
             description = "Оновлює інформацію про категорію. Всі поля опційні (partial update)"
@@ -121,6 +125,7 @@ public class VehicleCategoryController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(
             summary = "Видалити категорію",
             description = "Видаляє категорію з системи. Не можна видалити якщо вона використовується"

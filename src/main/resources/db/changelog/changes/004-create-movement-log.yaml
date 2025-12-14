@@ -1,0 +1,73 @@
+databaseChangeLog:
+  - changeSet:
+      id: 004-create-movement-log
+      author: student
+      description: Create vehicle movement log table for audit trail
+      changes:
+        - createTable:
+            tableName: movement_logs
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: vehicle_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: driver_id
+                  type: BIGINT
+              - column:
+                  name: movement_type
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: destination
+                  type: VARCHAR(200)
+              - column:
+                  name: notes
+                  type: VARCHAR(500)
+              - column:
+                  name: performed_by
+                  type: VARCHAR(100)
+              - column:
+                  name: performed_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: version
+                  type: BIGINT
+                  defaultValueNumeric: 0
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: movement_logs
+            baseColumnNames: vehicle_id
+            referencedTableName: vehicles
+            referencedColumnNames: id
+            constraintName: fk_movements_vehicle
+            onDelete: RESTRICT
+        - addForeignKeyConstraint:
+            baseTableName: movement_logs
+            baseColumnNames: driver_id
+            referencedTableName: drivers
+            referencedColumnNames: id
+            constraintName: fk_movements_driver
+            onDelete: SET NULL
+      rollback:
+        - dropForeignKeyConstraint:
+            baseTableName: movement_logs
+            constraintName: fk_movements_vehicle
+        - dropForeignKeyConstraint:
+            baseTableName: movement_logs
+            constraintName: fk_movements_driver
+        - dropTable:
+            tableName: movement_logs

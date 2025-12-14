@@ -1,0 +1,80 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-create-vehicles
+      author: student
+      description: Create vehicles table
+      changes:
+        - createTable:
+            tableName: vehicles
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: registration_number
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: name
+                  type: VARCHAR(200)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: category_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: fuel_type
+                  type: VARCHAR(30)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: fuel_consumption
+                  type: DECIMAL(5,2)
+              - column:
+                  name: status
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: year_of_manufacture
+                  type: INTEGER
+              - column:
+                  name: last_maintenance_date
+                  type: DATE
+              - column:
+                  name: mileage
+                  type: BIGINT
+                  defaultValueNumeric: 0
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: vehicles
+            baseColumnNames: category_id
+            referencedTableName: vehicle_categories
+            referencedColumnNames: id
+            constraintName: fk_vehicles_category
+            onDelete: RESTRICT
+      rollback:
+        - dropForeignKeyConstraint:
+            baseTableName: vehicles
+            constraintName: fk_vehicles_category
+        - dropTable:
+            tableName: vehicles

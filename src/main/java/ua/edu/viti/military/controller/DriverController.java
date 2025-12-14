@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ua.edu.viti.military.dto.request.DriverCreateRequest;
@@ -33,6 +34,7 @@ public class DriverController {
     private final DriverService driverService;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
     @Operation(
             summary = "Створити нового водія",
             description = """
@@ -71,6 +73,7 @@ public class DriverController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR', 'VIEWER')")
     @Operation(
             summary = "Отримати водія за ID",
             description = "Повертає детальну інформацію про водія"
@@ -95,6 +98,7 @@ public class DriverController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR', 'VIEWER')")
     @Operation(
             summary = "Отримати список всіх водіїв",
             description = "Повертає список водіїв з можливістю фільтрації по статусу активності"
@@ -114,6 +118,7 @@ public class DriverController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
     @Operation(
             summary = "Оновити інформацію про водія",
             description = "Оновлює дані про водія. Всі поля опційні (partial update)"
@@ -146,6 +151,7 @@ public class DriverController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(
             summary = "Видалити водія",
             description = "Видаляє запис про водія з системи"

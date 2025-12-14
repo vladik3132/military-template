@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/changes/001-create-vehicle-categories.yaml
+  - include:
+      file: db/changelog/changes/002-create-vehicles.yaml
+  - include:
+      file: db/changelog/changes/003-create-drivers.yaml
+  - include:
+      file: db/changelog/changes/004-create-movement-log.yaml
+  - include:
+      file: db/changelog/changes/005-create-users-roles.yaml
+  - include:
+      file: db/changelog/changes/006-add-indexes.yaml
+  - include:
+      file: db/changelog/data/seed-categories.yaml
+  - include:
+      file: db/changelog/data/seed-users-roles.yaml
+  - include:
+      file: db/changelog/data/seed-vehicles-drivers.yaml

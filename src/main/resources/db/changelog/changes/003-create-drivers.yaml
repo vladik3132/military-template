@@ -1,0 +1,74 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-create-drivers
+      author: student
+      description: Create drivers table
+      changes:
+        - createTable:
+            tableName: drivers
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: first_name
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_name
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: license_number
+                  type: VARCHAR(30)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: license_expiration_date
+                  type: DATE
+              - column:
+                  name: military_rank
+                  type: VARCHAR(50)
+              - column:
+                  name: assignment_status
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: years_of_experience
+                  type: INTEGER
+              - column:
+                  name: assigned_vehicle_id
+                  type: BIGINT
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: drivers
+            baseColumnNames: assigned_vehicle_id
+            referencedTableName: vehicles
+            referencedColumnNames: id
+            constraintName: fk_drivers_vehicle
+            onDelete: SET NULL
+      rollback:
+        - dropForeignKeyConstraint:
+            baseTableName: drivers
+            constraintName: fk_drivers_vehicle
+        - dropTable:
+            tableName: drivers

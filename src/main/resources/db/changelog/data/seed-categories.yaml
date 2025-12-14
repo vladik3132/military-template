@@ -1,0 +1,59 @@
+databaseChangeLog:
+  - changeSet:
+      id: seed-001-categories
+      author: student
+      description: Insert default vehicle categories
+      context: dev
+      changes:
+        - insert:
+            tableName: vehicle_categories
+            columns:
+              - column:
+                  name: name
+                  value: Легкові автомобілі
+              - column:
+                  name: code
+                  value: CAR
+              - column:
+                  name: description
+                  value: Легкові військові автомобілі для перевезення персоналу
+        - insert:
+            tableName: vehicle_categories
+            columns:
+              - column:
+                  name: name
+                  value: Вантажні автомобілі
+              - column:
+                  name: code
+                  value: TRUCK
+              - column:
+                  name: description
+                  value: Вантажні автомобілі для перевезення матеріалів та обладнання
+        - insert:
+            tableName: vehicle_categories
+            columns:
+              - column:
+                  name: name
+                  value: Спеціальна техніка
+              - column:
+                  name: code
+                  value: SPECIAL
+              - column:
+                  name: description
+                  value: Спеціальна військова техніка (ЗРК, гелікоптери, тощо)
+        - insert:
+            tableName: vehicle_categories
+            columns:
+              - column:
+                  name: name
+                  value: Мотоцикли
+              - column:
+                  name: code
+                  value: MOTORCYCLE
+              - column:
+                  name: description
+                  value: Військові мотоцикли
+      rollback:
+        - delete:
+            tableName: vehicle_categories
+            where: code IN ('CAR', 'TRUCK', 'SPECIAL', 'MOTORCYCLE')

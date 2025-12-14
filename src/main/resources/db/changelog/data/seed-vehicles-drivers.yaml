@@ -1,0 +1,50 @@
+databaseChangeLog:
+  - changeSet:
+      id: seed-003-demo-vehicles
+      author: student
+      context: dev
+      description: Seed demo vehicles linked to existing categories
+      changes:
+        - sql:
+            sql: |
+              INSERT INTO vehicles (registration_number, name, category_id, fuel_type, status, year_of_manufacture, mileage)
+              SELECT 'AA-1001', 'БТР-4', c.id, 'DIESEL', 'OPERATIONAL', 2020, 12000
+              FROM vehicle_categories c WHERE c.code = 'SPECIAL' AND NOT EXISTS (SELECT 1 FROM vehicles v WHERE v.registration_number = 'AA-1001');
+        - sql:
+            sql: |
+              INSERT INTO vehicles (registration_number, name, category_id, fuel_type, status, year_of_manufacture, mileage)
+              SELECT 'BB-2002', 'MAN HX60', c.id, 'DIESEL', 'OPERATIONAL', 2018, 55000
+              FROM vehicle_categories c WHERE c.code = 'TRUCK' AND NOT EXISTS (SELECT 1 FROM vehicles v WHERE v.registration_number = 'BB-2002');
+        - sql:
+            sql: |
+              INSERT INTO vehicles (registration_number, name, category_id, fuel_type, status, year_of_manufacture, mileage)
+              SELECT 'CC-3003', 'Toyota Hilux', c.id, 'PETROL', 'OPERATIONAL', 2019, 24000
+              FROM vehicle_categories c WHERE c.code = 'CAR' AND NOT EXISTS (SELECT 1 FROM vehicles v WHERE v.registration_number = 'CC-3003');
+      rollback:
+        - sql:
+            sql: DELETE FROM vehicles WHERE registration_number IN ('AA-1001','BB-2002','CC-3003');
+
+  - changeSet:
+      id: seed-004-demo-drivers
+      author: student
+      context: dev
+      description: Seed demo drivers
+      changes:
+        - sql:
+            sql: |
+              INSERT INTO drivers (first_name, last_name, license_number, assignment_status, years_of_experience, license_expiration_date, military_rank)
+              SELECT 'Іван', 'Шевченко', 'DRV-1001', 'AVAILABLE', 5, CURRENT_DATE + INTERVAL '2 year', 'Сержант'
+              WHERE NOT EXISTS (SELECT 1 FROM drivers d WHERE d.license_number = 'DRV-1001');
+        - sql:
+            sql: |
+              INSERT INTO drivers (first_name, last_name, license_number, assignment_status, years_of_experience, license_expiration_date, military_rank)
+              SELECT 'Олег', 'Коваль', 'DRV-2002', 'AVAILABLE', 7, CURRENT_DATE + INTERVAL '3 year', 'Старшина'
+              WHERE NOT EXISTS (SELECT 1 FROM drivers d WHERE d.license_number = 'DRV-2002');
+        - sql:
+            sql: |
+              INSERT INTO drivers (first_name, last_name, license_number, assignment_status, years_of_experience, license_expiration_date, military_rank)
+              SELECT 'Марія', 'Данилюк', 'DRV-3003', 'AVAILABLE', 4, CURRENT_DATE + INTERVAL '18 month', 'Лейтенант'
+              WHERE NOT EXISTS (SELECT 1 FROM drivers d WHERE d.license_number = 'DRV-3003');
+      rollback:
+        - sql:
+            sql: DELETE FROM drivers WHERE license_number IN ('DRV-1001','DRV-2002','DRV-3003');
